@@ -10,19 +10,36 @@ class ProjectController extends Controller
 {
     public function index(){
 
-        $projects = Project::all();
+        $projects = Project::with("type", "Creator", "technologies")->paginate(10);
 
-        return response()->json($projects);
+        return response()->json([
+            'success' => true,
+            'results' => $projects
+        ]);
 
     }
 
-    public function show(Project $project){
+    public function show(string $id){
+
+        $project = Project::with("type", "Creator", "technologies")->findOrFail($id);
+
+        return response()->json([
+            'success' => true,
+            'results' => $project
+        ]);
+    }
+
+    public function projectSearch(Request $request){
+
+        $data = $request->all();
+
+
+        $projects = Project::where("nome", "LIKE", "%" . $data["nome"] . "%")->get();
+
+        return response()->json([
+            'success' => true,
+            'results' => $projects
+        ]);
 
     }
 }
-
-
-
-/* 'nome' => $projects->nome,
-            'url_repo' => $projects->url_repo,
-            'img' => $projects->img */

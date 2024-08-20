@@ -15,9 +15,9 @@ class Project extends Model
     use SoftDeletes;
 
     protected $fillable = [
+        'nome',
         'type_id',
         'creator_id',
-        'nome',
         'url_repo',
         'img',
     ];
